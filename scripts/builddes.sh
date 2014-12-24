@@ -50,6 +50,7 @@ do
   if [ ${b#*.} = "include.raml" ]; then
     echo "skipping generation for include file"
   else
+    mkdir -p $DIR/generated
     raml2html -i $f -o $DIR/generated/$b.html
     echo "<tr><td><b>${b%%.*}</b></td><td><a href='generated/$b.html'>$b.html</a></td><td><a href='raml/$b'>$b</a></td></tr>" >> $DIR/index.html
   fi
