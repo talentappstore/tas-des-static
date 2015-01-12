@@ -1,7 +1,8 @@
 // borrows from http://stackoverflow.com/a/187946/2480751
 
-function tocify(tocId) {
+function renderTOC() {
 
+	var tocId = 'toc';
 	var toc = "";
 	var level = 0;
 
