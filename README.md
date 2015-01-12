@@ -1,3 +1,5 @@
+*All files live in the gh-pages branch*
+
 tas-des-static
 ==============
 tas-des-static is a set of static resources (shell scripts, node scripts, javascript and CSS) that we use at Talent
