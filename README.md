@@ -70,19 +70,19 @@ Within the head of your design document, include the relevant files to support t
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     
     <!-- needed for sequence diagrams -->
-    <script type="text/javascript" src='http://tas-des-static.talentappstore.com/js/raphael-min.js'></script>
-    <script type="text/javascript" src='http://tas-des-static.talentappstore.com/js/underscore-min.js'></script>
-    <script type="text/javascript" src='http://tas-des-static.talentappstore.com/js/sequence-diagram-min.js'></script>
-    <script type="text/javascript" src='http://tas-des-static.talentappstore.com/js/sequence-diagram-wrapper.js'></script>
+    <script type="text/javascript" src='http://talentappstore.github.io/tas-des-static/js/raphael-min.js'></script>
+    <script type="text/javascript" src='http://talentappstore.github.io/tas-des-static/js/underscore-min.js'></script>
+    <script type="text/javascript" src='http://talentappstore.github.io/tas-des-static/js/sequence-diagram-min.js'></script>
+    <script type="text/javascript" src='http://talentappstore.github.io/tas-des-static/js/sequence-diagram-wrapper.js'></script>
     
     <!-- needed for includes -->
-    <script type="text/javascript" src='http://tas-des-static.talentappstore.com/js/clientInclude.js'></script>
+    <script type="text/javascript" src='http://talentappstore.github.io/tas-des-static/js/clientInclude.js'></script>
     
     <!-- needed for table of contents -->
-    <script type="text/javascript" src='http://tas-des-static.talentappstore.com/js/tocify.js'></script>
+    <script type="text/javascript" src='http://talentappstore.github.io/tas-des-static/js/tocify.js'></script>
     
     <!-- always required -->
-    <link rel='stylesheet' href='http://tas-des-static.talentappstore.com/css/des.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='http://talentappstore.github.io/tas-des-static/css/des.css' type='text/css' media='all' />
 
 
 Include sequence diagrams
