@@ -1,7 +1,7 @@
 tas-des-static
 ==============
-tas-des-static is a set of static resources (shell scripts, node scripts, javascript and CSS) that
-we use at Talent App Store for some of our design documentation.
+tas-des-static is a set of static resources (shell scripts, node scripts, javascript and CSS) that we use at Talent
+App Store for some of our design documentation.
 
 tas-des-static helps with:
 
