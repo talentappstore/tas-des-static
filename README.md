@@ -54,7 +54,13 @@ and can be hosted on any server (including github static hosting).
 
 Most tas-des-static behaviour happens client-side via Javascript, so you can mostly preview your design document as a file on
 your file system. However the "clientInclude" feature relies on ajax and thus only works when your files are hosted on a web server - one easy way
-to do this is to install tomcat and point it at your file system as per http://www.moreofless.co.uk/static-content-web-pages-images-tomcat-outside-war/.
+to do this is to install tomcat and point it at your file system like this (see http://www.moreofless.co.uk/static-content-web-pages-images-tomcat-outside-war/):
+
+    <Host appBase="webapps"
+        ...
+        <Context docBase="/home/stuff" path="/static" />
+    </Host>
+
 You can use something like ngrok to share your localhost web site with the world.
 
 
