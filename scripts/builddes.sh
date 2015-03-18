@@ -1,10 +1,11 @@
 #!/bin/bash
 
-# This script validates the RAML and json schema as much as it can and then generates
+# This script validates your structured design files (raml, json schema, json examples) as much
+# as it can and then generates
 # an index.html file and the HTML versions of the RAML files. Specifically:
 # 1) for all schemas, validate the corresponding example file against the schema
 # 2) for all RAML files, generate the corresponding HTML version
-# 3) generate an overall index.html file
+# 3) generate an overall index.html file with links to all of the structured docs
 #
 # Before running, you'll need to install some of that node.js goodness...
 # yum install npm
@@ -25,6 +26,7 @@ if [ "$#" -ne 1 ]; then
   echo " +- generated/"
   echo " +- schemas/"
   echo " +- examples/"
+  echo " +- doc/"
   exit 1
 else
   DIR=$1  
@@ -77,6 +79,15 @@ do
   done
   
   echo "<tr><td><a href='schemas/$b.json'>$b.json</a></td><td>$exampleString</td></tr>" >> $DIR/index.html
+done
+echo "</tbody></table>" >> $DIR/index.html
+
+
+echo "<h2>Documentation</h2><table class='table table-bordered table-condensed'><thead><tr><th>File</th></tr></thead><tbody>" >> $DIR/index.html
+for f in $DIR/doc/*.html
+do
+  b=$(basename $f)
+  echo "<tr><td><a href='doc/$b'>$b</a></td></tr>" >> $DIR/index.html
 done
 echo "</tbody></table>" >> $DIR/index.html
 
