@@ -1,3 +1,31 @@
+html {
+	    font-family: sans-serif; /* 1 */
+	    -ms-text-size-adjust: 100%; /* 2 */
+	    -webkit-text-size-adjust: 100%; /* 2 */
+	    background-color: #fcfff8;
+	}
+code,
+kbd,
+pre,
+samp {
+	    font-family: monospace, serif;
+	    font-size: 1em;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit; /* 1 */
+    font-size: 100%; /* 2 */
+    margin: 0; /* 3 */
+}
+li  {
+   margin:0 0 5px 0;   
+}
+ul,ol  {
+   margin:5px 0 0 0;   
+}
 
 
 DIV.codeBlock {
