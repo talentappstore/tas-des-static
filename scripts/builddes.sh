@@ -60,30 +60,53 @@ done
 echo "</tbody></table>" >> $DIR/index.html
 
 echo "<h2>Schemas</h2><table class='table table-bordered table-condensed'><thead><tr><th>schema</th><th>examples</th></tr></thead><tbody>" >> $DIR/index.html
-for f in $DIR/schemas/*.json
+
+topLevelSchema=$DIR/generated/$(basename $DIR).json
+
+schemaString=''
+shopt -s nullglob
+for schema in $DIR/schemas/*.json
 do
-  b=$(basename $f)
+  b=$(basename $schema .json)
+  javaType=${b^} #capitalizes in bash 4+
+  
+  schemaString=$schemaString'
+    "'$b'": { "$ref": "../schemas/'$(basename $schema)'" },'
   
   exampleString=""
-  # TODO: looping all files is well naff, wrestle shell file expansion into submission instead
-  for example in $DIR/examples/*.json
+  for example in $DIR/examples/$b-*.json
   do
-     e=$(basename $example)
-     # trim extensions from each
-     e=${e%.json}
-     b=${b%.json}
-     if [[ $e =~ $b\-.* ]]
-       then
-          exampleString="$exampleString <a href='examples/$e.json'>$e.json</a><br />"
-     fi
+    e=$(basename $example)
+    exampleString="$exampleString <a href='examples/$e'>$e</a><br />"
   done
   
   echo "<tr><td><a href='schemas/$b.json'>$b.json</a></td><td>$exampleString</td></tr>" >> $DIR/index.html
 done
+
+
+  package="$(basename $DIR)"
+  package="${package#'tas-'}"
+  package="${package%'-apis'}"
+  package="com.tas.api.${package}."${package^}
+  
+echo "generating top-level schema for $package"
+
+echo -n '{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "javaType": "'$package'",
+  "properties": {' > $topLevelSchema
+  
+echo "${schemaString%,}" >> $topLevelSchema
+
+echo '
+  }
+}' >> $topLevelSchema
+
 echo "</tbody></table>" >> $DIR/index.html
-
-
 echo "<h2>Documentation</h2><table class='table table-bordered table-condensed'><thead><tr><th>File</th></tr></thead><tbody>" >> $DIR/index.html
+
+
 for f in $DIR/doc/*.html
 do
   b=$(basename $f)
