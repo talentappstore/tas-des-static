@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 
-var tv4 = require('tv4');
+// var tv4 = require('tv4');
+var tv4 = require('tv4'),
+formats = require('tv4-formats');
+tv4.addFormat(formats);
+
 var fs=require('fs');
 
 var args = process.argv.slice(2);
