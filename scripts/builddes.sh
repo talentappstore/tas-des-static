@@ -9,8 +9,9 @@
 #
 # Before running, you'll need to install some of that node.js goodness...
 # yum install npm
-# npm i -g raml2html tv4
+# npm i -g raml2html tv4 ajv 
 # export NODE_PATH=/usr/lib/node_modules
+# For ubuntu: export NODE_PATH=/usr/local/lib/node_modules
 
 # use location of this script to locate other scripts
 SCRIPTDIR="$( cd "$( dirname "$0" )" && pwd )"
