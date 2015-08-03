@@ -32,7 +32,8 @@ DIV.codeBlock {
 display: inline-block;
 white-space: pre;
 
-  background-color: #ffe0c0;
+  background-color: #f8f8f8;
+  
   border-color: #ffcb94;
   border-style: solid;
   border-width: 1px;
