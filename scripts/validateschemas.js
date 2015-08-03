@@ -6,23 +6,51 @@ formats = require('tv4-formats');
 tv4.addFormat(formats);
 
 var fs=require('fs');
+var Ajv = require('ajv');
+var ajv = Ajv();
 
 var args = process.argv.slice(2);
 
 var dir = args[0];
 
+var schemasHaveErrors = false;
+
+validateSchemas();
 
 //main
-loadSchemas();
+if (!schemasHaveErrors) {
+	loadSchemas();
 
-// to check a single schema, do this:
-// ./scripts/validateschemas.js . theSchema.json 
+	// to check a single schema, do this:
+	// ./scripts/validateschemas.js . theSchema.json 
 
-if (args.length == 1)
-	validateAllSchemaExamples();
-else
-	validateSchemaExamples(args[1]);
+	if (args.length == 1)
+		validateAllSchemaExamples();
+	else
+		validateSchemaExamples(args[1]);
+} else {
+	console.log('\nschemas have errors, please fix the errors to continue validation\n');
+}
 
+
+function validateSchemas() {
+	var schemaFiles = fs.readdirSync(dir + '/schemas')
+		.map( function(file) {
+			return dir + '/schemas/' + file;
+		});
+
+	console.log('begin validating schemas');
+	schemaFiles.forEach( function (file) {
+		console.log('  validating ' + file);
+		var schema = JSON.parse(fs.readFileSync(file));
+		ajv.validateSchema(schema);
+		if (ajv.errors) {
+			schemasHaveErrors = true;
+		       	console.log('    ERROR: ' + JSON.stringify(ajv.errors, null, 4));
+		}
+	});
+	console.log('end validating schemas');
+}
 
 function loadSchemas() {
 	//load individual schemas. tv4 does not (in any obvious way) report errors for missing schemas, so its important to load them! 
@@ -50,7 +78,7 @@ function validateExamplesForSchema(schemaFile) {
 		if (exampleFileBase.localeCompare(schemaFileName) == 0) {
 			exampleFound = true;
 			
-			console.log('    example: ' + exampleFile);
+			console.log('	 example: ' + exampleFile);
 			var exampleText = fs.readFileSync(dir + '/examples/' + exampleFile);
 			var example = JSON.parse(exampleText);
 			var res = tv4.validateMultiple(example,
