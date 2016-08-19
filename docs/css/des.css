@@ -1,0 +1,56 @@
+html {
+	    font-family: sans-serif; /* 1 */
+	    -ms-text-size-adjust: 100%; /* 2 */
+	    -webkit-text-size-adjust: 100%; /* 2 */
+	    background-color: #fcfff8;
+	}
+code,
+kbd,
+pre,
+samp {
+	    font-family: monospace, serif;
+	    font-size: 1em;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit; /* 1 */
+    font-size: 100%; /* 2 */
+    margin: 0; /* 3 */
+}
+li  {
+   margin:0 0 5px 0;   
+}
+ul,ol  {
+   margin:5px 0 0 0;   
+}
+
+
+DIV.codeBlock {
+display: inline-block;
+white-space: pre;
+
+  background-color: #f8f8f8;
+  
+  border-color: #ffcb94;
+  border-style: solid;
+  border-width: 1px;
+  color: #333333;
+  font-family: Consolas,"Liberation Mono",Courier,monospace;
+  font-weight: normal;
+  padding: 0.125rem 0.3125rem 0.0625rem;
+}
+
+DIV.seqDiag {
+display: none;
+}
+
+blockquote, blockquote p {
+  line-height: 1.6;
+  color: #0296C9;
+}
+
+
+
