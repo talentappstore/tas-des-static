@@ -9,7 +9,7 @@
 #
 # Before running, you'll need to install some of that node.js goodness...
 # yum install npm
-# npm i -g raml2html tv4 tv4-formats
+# npm i -g raml2html tv4 tv4-formats ajv
 # export NODE_PATH=/usr/lib/node_modules
 # For ubuntu: export NODE_PATH=/usr/local/lib/node_modules
 
