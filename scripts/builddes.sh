@@ -54,9 +54,10 @@ do
     echo "skipping generation for include file"
   else
     mkdir -p $DIR/generated
+    echo "  will generate $b.html"
     raml2html -i $f -o $DIR/generated/$b.html
     echo "<tr><td><b>${b%%.*}</b></td><td><a href='generated/$b.html'>$b.html</a></td><td><a href='raml/$b'>$b</a></td></tr>" >> $DIR/index.html
-    echo "  done generating $b.html from $b"
+    echo "  done generating $b.html"
   fi
 done
 echo "</tbody></table>" >> $DIR/index.html
