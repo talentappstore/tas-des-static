@@ -63,18 +63,15 @@ echo "</tbody></table>" >> $DIR/index.html
 echo "<h2>Schemas</h2><table class='table table-bordered table-condensed'><thead><tr><th>schema</th><th>examples</th></tr></thead><tbody>" >> $DIR/index.html
 for f in $DIR/schemas/*.json
 do
-  b=$(basename $f)
+  b=$(basename $f .json)
   
   exampleString=""
-  # TODO: looping all files is well naff, wrestle shell file expansion into submission instead
-  for example in $DIR/examples/*.json
+  for example in $DIR/examples/$b*.json
   do
-     e=$(basename $example)
-     # trim extensions from each
-     e=${e%.json}
-     b=${b%.json}
-     if [[ $e =~ $b\-.* ]]
+     e=$(basename $example .json)
+     if [[ $e =~ $b\-.* ]] && [[ -f $DIR/examples/$e.json ]]
        then
+          echo "schema $b example $e"
           exampleString="$exampleString <a href='examples/$e.json'>$e.json</a><br />"
      fi
   done
