@@ -54,60 +54,36 @@ do
     echo "skipping generation for include file"
   else
     mkdir -p $DIR/generated
+    echo "  will generate $b.html"
     raml2html -i $f -o $DIR/generated/$b.html
     echo "<tr><td><b>${b%%.*}</b></td><td><a href='generated/$b.html'>$b.html</a></td><td><a href='raml/$b'>$b</a></td></tr>" >> $DIR/index.html
+    echo "  done generating $b.html"
   fi
 done
 echo "</tbody></table>" >> $DIR/index.html
 
 echo "<h2>Schemas</h2><table class='table table-bordered table-condensed'><thead><tr><th>schema</th><th>examples</th></tr></thead><tbody>" >> $DIR/index.html
-
-topLevelSchema=$DIR/generated/$(basename $DIR).json
-
-schemaString=''
-shopt -s nullglob
-for schema in $DIR/schemas/*.json
+for f in $DIR/schemas/*.json
 do
-  b=$(basename $schema .json)
-  javaType=${b^} #capitalizes in bash 4+
-  
-  schemaString=$schemaString'
-    "'$b'": { "$ref": "../schemas/'$(basename $schema)'" },'
+  b=$(basename $f .json)
   
   exampleString=""
-  for example in $DIR/examples/$b-*.json
+  for example in $DIR/examples/$b*.json
   do
-    e=$(basename $example)
-    exampleString="$exampleString <a href='examples/$e'>$e</a><br />"
+     e=$(basename $example .json)
+     if [[ $e =~ $b\-.* ]] && [[ -f $DIR/examples/$e.json ]]
+       then
+          echo "schema $b example $e"
+          exampleString="$exampleString <a href='examples/$e.json'>$e.json</a><br />"
+     fi
   done
   
   echo "<tr><td><a href='schemas/$b.json'>$b.json</a></td><td>$exampleString</td></tr>" >> $DIR/index.html
 done
-
-
-  package="$(basename $DIR)"
-  package="${package#'tas-'}"
-  package="${package%'-apis'}"
-  package="com.tas.api.${package}."${package^}
-  
-echo "generating top-level schema for $package"
-
-echo -n '{
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "object",
-  "javaType": "'$package'",
-  "properties": {' > $topLevelSchema
-  
-echo "${schemaString%,}" >> $topLevelSchema
-
-echo '
-  }
-}' >> $topLevelSchema
-
 echo "</tbody></table>" >> $DIR/index.html
+
+
 echo "<h2>Documentation</h2><table class='table table-bordered table-condensed'><thead><tr><th>File</th></tr></thead><tbody>" >> $DIR/index.html
-
-
 for f in $DIR/doc/*.html
 do
   b=$(basename $f)
