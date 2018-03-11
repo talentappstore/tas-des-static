@@ -9,6 +9,7 @@ function renderTOC() {
 	document.body.innerHTML = document.body.innerHTML.replace(
 			/<h([\d])>([^<]+)<\/h([\d])>/gi, function(str, openLevel,
 					titleText, closeLevel) {
+
 				if (openLevel != closeLevel) {
 					return str;
 				}
@@ -25,14 +26,15 @@ function renderTOC() {
 				toc += "<li><a href=\"#" + anchor + "\">" + titleText
 						+ "</a></li>";
 
+//				return "<h" + openLevel + "><a name=\"" + anchor + "\">"
+//						+ titleText + "</a></h" + closeLevel + ">";
 				return "<h" + openLevel + "><a name=\"" + anchor + "\">"
-						+ titleText + "</a></h" + closeLevel + ">";
+						+ titleText + "</a>&nbsp;&nbsp;<small><small><a href=\"#top\">top</a></small></small></h" + closeLevel + ">";
 			});
-
+	
 	if (level) {
 		toc += (new Array(level + 1)).join("</ul>");
 	}
-
-//	document.getElementById("toc").innerHTML += toc;
+	
 	document.getElementById(tocId).innerHTML += toc;
 }
