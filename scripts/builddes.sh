@@ -38,14 +38,14 @@ $SCRIPTDIR/validateschemas.js $DIR
 
 echo "generating HTML"
 
-echo "<html><head><title>TAS core</title>" > $DIR/index.html
-echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>" >> $DIR/index.html
-echo "<meta name='viewport' content='width=device-width, initial-scale=1'>" >> $DIR/index.html
-echo "</head><body>" >> $DIR/index.html
+echo "<html><head><title>TAS core</title>" > $DIR/generated/index.html
+echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>" >> $DIR/generated/index.html
+echo "<meta name='viewport' content='width=device-width, initial-scale=1'>" >> $DIR/generated/index.html
+echo "</head><body>" >> $DIR/generated/index.html
 NAME=`cat $DIR/meta/name`
-echo "<div class='container'><h1>$NAME</h1>" >> $DIR/index.html
+echo "<div class='container'><h1>$NAME</h1>" >> $DIR/generated/index.html
 
-echo "<h2>APIs</h2><table class='table table-bordered table-condensed'><thead><tr><th></th><th>HTML</th><th>RAML</th></tr></thead><tbody>" >> $DIR/index.html
+echo "<h2>APIs</h2><table class='table table-bordered table-condensed'><thead><tr><th></th><th>HTML</th><th>RAML</th></tr></thead><tbody>" >> $DIR/generated/index.html
 for f in $DIR/raml/*.raml
 do
   b=$(basename $f)
@@ -56,13 +56,13 @@ do
     mkdir -p $DIR/generated
     echo "  will generate $b.html"
     raml2html -i $f -o $DIR/generated/$b.html
-    echo "<tr><td><b>${b%%.*}</b></td><td><a href='generated/$b.html'>$b.html</a></td><td><a href='raml/$b'>$b</a></td></tr>" >> $DIR/index.html
+    echo "<tr><td><b>${b%%.*}</b></td><td><a href='../generated/$b.html'>$b.html</a></td><td><a href='../raml/$b'>$b</a></td></tr>" >> $DIR/generated/index.html
     echo "  done generating $b.html"
   fi
 done
-echo "</tbody></table>" >> $DIR/index.html
+echo "</tbody></table>" >> $DIR/generated/index.html
 
-echo "<h2>Schemas</h2><table class='table table-bordered table-condensed'><thead><tr><th>schema</th><th>examples</th></tr></thead><tbody>" >> $DIR/index.html
+echo "<h2>Schemas</h2><table class='table table-bordered table-condensed'><thead><tr><th>schema</th><th>examples</th></tr></thead><tbody>" >> $DIR/generated/index.html
 for f in $DIR/schemas/*.json
 do
   b=$(basename $f .json)
@@ -74,25 +74,40 @@ do
      if [[ $e =~ $b\-.* ]] && [[ -f $DIR/examples/$e.json ]]
        then
           echo "schema $b example $e"
-          exampleString="$exampleString <a href='examples/$e.json'>$e.json</a><br />"
+          exampleString="$exampleString <a href='../examples/$e.json'>$e.json</a><br />"
      fi
   done
   
-  echo "<tr><td><a href='schemas/$b.json'>$b.json</a></td><td>$exampleString</td></tr>" >> $DIR/index.html
+  echo "<tr><td><a href='../schemas/$b.json'>$b.json</a></td><td>$exampleString</td></tr>" >> $DIR/generated/index.html
 done
-echo "</tbody></table>" >> $DIR/index.html
+echo "</tbody></table>" >> $DIR/generated/index.html
+
+echo "deleting all files in $DIR/doc"
+rm $DIR/doc/*
+
+echo "processing doc files in $DIR/raw to inject document index sidebar"
+for f in $DIR/raw/*.html
+do
+  b=$(basename $f)
+  echo "$f -> $DIR/doc/$b"
+# as per https://unix.stackexchange.com/a/49438  
+sed -e '/SIDEBARGOESHERE/ {' -e "r $DIR/inserts/sidebar.html" -e 'd' -e '}' $f > $DIR/doc/$b  
+#  sed -e '/SIDEBARGOESHERE/ {' -e "r $DIR/inserts/sidebar.html" -e 'd' -e '}' -i $f  
+done
 
 
-echo "<h2>Documentation</h2><table class='table table-bordered table-condensed'><thead><tr><th>File</th></tr></thead><tbody>" >> $DIR/index.html
+echo "generating index of files in $DIR/doc"
+
+echo "<h2>Documentation</h2><table class='table table-bordered table-condensed'><thead><tr><th>File</th></tr></thead><tbody>" >> $DIR/generated/index.html
 for f in $DIR/doc/*.html
 do
   b=$(basename $f)
-  echo "<tr><td><a href='doc/$b'>$b</a></td></tr>" >> $DIR/index.html
+  echo "<tr><td><a href='../doc/$b'>$b</a></td></tr>" >> $DIR/generated/index.html
 done
-echo "</tbody></table>" >> $DIR/index.html
+echo "</tbody></table>" >> $DIR/generated/index.html
 
-echo "</div>" >> $DIR/index.html
-echo "</body></html>" >> $DIR/index.html
+echo "</div>" >> $DIR/generated/index.html
+echo "</body></html>" >> $DIR/generated/index.html
 
 echo "done generating HTML"
 
